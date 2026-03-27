@@ -1,0 +1,36 @@
+{
+  "name": "lingolearn",
+  "version": "1.0.0",
+  "productName": "LingoLearn",
+  "description": "Mint green language learning desktop prototype",
+  "author": "Riyan Popat",
+  "license": "UNLICENSED",
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "backend": "node backend/server.js",
+    "dev": "concurrently \"npm run backend\" \"npm run start\"",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "make:mac": "electron-forge make --platform=darwin",
+    "make:win": "electron-forge make --platform=win32",
+    "make:win:zip": "electron-forge make --platform=win32 --arch=x64 --targets=@electron-forge/maker-zip",
+    "stripe:seed": "node backend/scripts/seed-stripe-products.js",
+    "check": "node --check electron-main.js && node --check preload.js && node --check scripty.js && node --check backend/server.js && node --check backend/lib/billing-store.js"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.11.1",
+    "@electron-forge/maker-dmg": "^7.11.1",
+    "@electron-forge/maker-squirrel": "^7.11.1",
+    "@electron-forge/maker-zip": "^7.11.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
+    "electron": "^28.3.3"
+  },
+  "dependencies": {
+    "concurrently": "^9.2.1",
+    "dotenv": "^17.3.1",
+    "electron-squirrel-startup": "^1.0.1",
+    "express": "^5.2.1",
+    "stripe": "^21.0.1"
+  }
+}

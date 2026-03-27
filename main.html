@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LingoLearn</title>
+    <link rel="stylesheet" href="styler.css" />
+  </head>
+  <body>
+    <div class="background-orb orb-one"></div>
+    <div class="background-orb orb-two"></div>
+    <div class="background-grid"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" data-i18n="eyebrow">Mint Green Language Learning Studio</p>
+          <h1 data-i18n="brandTitle">LingoLearn</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="topbar-language">
+            <span data-i18n="interfaceLanguageLabel">Interface language</span>
+            <div id="interfaceLanguagePicker" class="chip-row"></div>
+          </div>
+          <button id="logoutButton" class="ghost-button hidden" type="button" data-i18n="logoutButton">
+            Log Out
+          </button>
+        </div>
+      </header>
+
+      <main class="main-grid">
+        <section id="welcomePanel" class="panel hero-panel">
+          <div class="hero-copy">
+            <span class="tag" data-i18n="prototypeTag">Desktop prototype</span>
+            <h2 data-i18n="heroTitle">Learn languages from first flashcard to expert mastery.</h2>
+            <p data-i18n="heroSubtitle">
+              Pick the language you already know, sign in as a student or teacher, and unlock guided
+              lessons, AI-style practice, tests, streaks, and support.
+            </p>
+            <div class="hero-stats">
+              <div class="mini-stat">
+                <strong>6</strong>
+                <span data-i18n="statLanguages">Study languages</span>
+              </div>
+              <div class="mini-stat">
+                <strong>4</strong>
+                <span data-i18n="statLevels">Difficulty bands</span>
+              </div>
+              <div class="mini-stat">
+                <strong>3</strong>
+                <span data-i18n="statRoles">Account types</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-card">
+            <div class="setup-block">
+              <h3 data-i18n="pickHomeLanguageTitle">1. Pick the language you use most</h3>
+              <p data-i18n="pickHomeLanguageText">
+                The interface, prompts, and flashcard meanings update to match your chosen language.
+              </p>
+              <div id="heroLanguagePicker" class="language-grid"></div>
+            </div>
+
+            <div class="setup-block">
+              <h3 data-i18n="pickRoleTitle">2. Choose your account type</h3>
+              <div class="role-toggle">
+                <button id="personalRoleButton" class="role-button" type="button" data-role="personal">
+                  <span data-i18n="personalRole">Personal</span>
+                  <small data-i18n="personalPrice">£3.99 per month</small>
+                </button>
+                <button id="studentRoleButton" class="role-button active" type="button" data-role="student">
+                  <span data-i18n="studentRole">Student</span>
+                  <small data-i18n="studentPrice">£3.99 per month</small>
+                </button>
+                <button id="teacherRoleButton" class="role-button" type="button" data-role="teacher">
+                  <span data-i18n="teacherRole">Teacher</span>
+                  <small data-i18n="teacherPrice">£2.99 per student monthly</small>
+                </button>
+              </div>
+            </div>
+
+            <div class="setup-block auth-block">
+              <div class="auth-tabs">
+                <button id="loginTab" class="tab-button active" type="button" data-mode="login" data-i18n="loginTab">
+                  Login
+                </button>
+                <button
+                  id="createTab"
+                  class="tab-button"
+                  type="button"
+                  data-mode="create"
+                  data-i18n="createTab"
+                >
+                  Create Account
+                </button>
+              </div>
+
+              <form id="authForm" class="auth-form">
+                <label id="nameFieldWrapper" class="hidden">
+                  <span data-i18n="nameLabel">Full name</span>
+                  <input id="nameInput" type="text" placeholder="Riyan Popat" />
+                </label>
+                <label>
+                  <span data-i18n="emailLabel">Email</span>
+                  <input id="emailInput" type="email" placeholder="name@example.com" required />
+                </label>
+                <label>
+                  <span data-i18n="passwordLabel">Password</span>
+                  <input id="passwordInput" type="password" placeholder="••••••••" required />
+                </label>
+                <button id="authSubmit" class="primary-button" type="submit" data-i18n="loginCta">Login to app</button>
+              </form>
+              <p id="authHint" class="hint" data-i18n="authHint">
+                Premium lessons unlock after Stripe confirms an active subscription.
+              </p>
+              <div id="authStatus" class="status-box subtle" data-i18n="welcomeStatus">
+                Ready to create your language learning workspace.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="workspace" class="workspace hidden">
+          <aside class="sidebar panel">
+            <div class="profile-card">
+              <p id="profileGreeting" class="eyebrow">Welcome</p>
+              <h2 id="profileName">Learner</h2>
+              <p id="profileEmail" class="muted">name@example.com</p>
+            </div>
+
+            <div class="status-stack">
+              <div class="status-card">
+                <span data-i18n="studyLanguageLabel">Study language</span>
+                <select id="studyLanguageSelect"></select>
+              </div>
+              <div class="status-card">
+                <span data-i18n="streakLabel">Current streak</span>
+                <strong id="streakValue">1 days</strong>
+              </div>
+              <div class="status-card">
+                <span data-i18n="accessLabel">Access</span>
+                <strong id="accessBadge">Premium locked</strong>
+              </div>
+            </div>
+
+            <nav id="mainNav" class="nav-list">
+              <button class="nav-button active" data-view="dashboard" type="button" data-i18n="navDashboard">
+                Dashboard
+              </button>
+              <button class="nav-button" data-view="flashcards" type="button" data-i18n="navFlashcards">
+                Flashcards
+              </button>
+              <button class="nav-button" data-view="practice" type="button" data-i18n="navPractice">
+                Practice Hub
+              </button>
+              <button class="nav-button" data-view="tests" type="button" data-i18n="navTests">
+                Tests
+              </button>
+              <button class="nav-button teacher-only hidden" data-view="teacher" type="button" data-i18n="navTeacher">
+                Teacher Hub
+              </button>
+              <button class="nav-button" data-view="payments" type="button" data-i18n="navPayments">
+                Payments
+              </button>
+            </nav>
+
+            <div class="sidebar-note">
+              <h3 data-i18n="securityTitle">Security note</h3>
+              <p data-i18n="securityText">
+                Keep AI keys and payment secrets on a server, never in the Electron frontend.
+              </p>
+            </div>
+          </aside>
+
+          <section class="content-area">
+            <section class="panel content-view active" data-view-panel="dashboard">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="dashboardEyebrow">Student snapshot</p>
+                  <h2 data-i18n="dashboardTitle">Your learning dashboard</h2>
+                </div>
+                <span id="roleBadge" class="pill-badge">Student</span>
+              </div>
+
+              <div class="stats-grid">
+                <article class="metric-card">
+                  <span data-i18n="metricToday">Today</span>
+                  <strong id="todayFocus">12 min review</strong>
+                  <p data-i18n="metricTodayCopy">A short burst keeps your streak alive.</p>
+                </article>
+                <article class="metric-card">
+                  <span data-i18n="metricLevel">Current band</span>
+                  <strong id="levelBand">Beginner</strong>
+                  <p data-i18n="metricLevelCopy">Move from flashcards to advanced tests.</p>
+                </article>
+                <article class="metric-card">
+                  <span data-i18n="metricAssignments">Assignments</span>
+                  <strong id="assignmentCount">0 open tasks</strong>
+                  <p data-i18n="metricAssignmentsCopy">Teacher-set work appears here instantly.</p>
+                </article>
+              </div>
+
+              <div class="dashboard-grid">
+                <article class="progress-panel">
+                  <div class="section-heading compact">
+                    <div>
+                      <p class="eyebrow" data-i18n="pathEyebrow">Learning path</p>
+                      <h3 data-i18n="pathTitle">From first words to expert fluency</h3>
+                    </div>
+                  </div>
+                  <div id="levelTrack" class="level-track"></div>
+                </article>
+
+                <article class="practice-preview">
+                  <div class="section-heading compact">
+                    <div>
+                      <p class="eyebrow" data-i18n="focusEyebrow">Today’s focus</p>
+                      <h3 data-i18n="focusTitle">AI-style study plan</h3>
+                    </div>
+                    <button id="refreshPracticeButton" class="ghost-button" type="button" data-i18n="refreshButton">
+                      Refresh
+                    </button>
+                  </div>
+                  <div id="practicePreviewList" class="stack-list"></div>
+                </article>
+              </div>
+            </section>
+
+            <section class="panel content-view" data-view-panel="flashcards" data-premium="true">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="flashcardsEyebrow">Step-by-step learning</p>
+                  <h2 data-i18n="flashcardsTitle">Flashcards and guided progression</h2>
+                </div>
+                <div class="flashcard-controls">
+                  <span id="flashcardStage" class="pill-badge">Beginner</span>
+                  <button id="flipCardButton" class="ghost-button" type="button" data-i18n="flipCardButton">
+                    Flip
+                  </button>
+                  <button id="nextCardButton" class="primary-button" type="button" data-i18n="nextCardButton">
+                    Next card
+                  </button>
+                </div>
+              </div>
+
+              <div id="flashcard" class="flashcard">
+                <div class="flashcard-face flashcard-front">
+                  <span data-i18n="flashcardFrontLabel">Front</span>
+                  <h3 id="flashcardFront">salve</h3>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                  <span data-i18n="flashcardBackLabel">Meaning</span>
+                  <h3 id="flashcardBack">hello</h3>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel content-view" data-view-panel="practice" data-premium="true">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="practiceEyebrow">Practice hub</p>
+                  <h2 data-i18n="practiceTitle">AI-generated drills, review, and streak work</h2>
+                </div>
+                <button id="generatePracticeButton" class="primary-button" type="button" data-i18n="generatePracticeButton">
+                  Generate new practice
+                </button>
+              </div>
+              <div id="practiceHubList" class="practice-grid"></div>
+            </section>
+
+            <section class="panel content-view" data-view-panel="tests" data-premium="true">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="testsEyebrow">Assessment zone</p>
+                  <h2 data-i18n="testsTitle">Select a test difficulty and start</h2>
+                </div>
+                <div class="test-toolbar">
+                  <select id="testDifficultySelect">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="expert">Expert</option>
+                  </select>
+                  <button id="generateTestButton" class="primary-button" type="button" data-i18n="generateTestButton">
+                    Build test
+                  </button>
+                </div>
+              </div>
+              <div id="testList" class="test-list"></div>
+              <div class="test-actions">
+                <button id="markTestButton" class="ghost-button" type="button" data-i18n="markTestButton">
+                  Mark answers
+                </button>
+                <div id="testResult" class="status-box subtle" data-i18n="testReadyStatus">
+                  Choose a difficulty to generate questions.
+                </div>
+              </div>
+            </section>
+
+            <section class="panel content-view" data-view-panel="teacher" data-premium="true">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="teacherEyebrow">Teacher dashboard</p>
+                  <h2 data-i18n="teacherTitle">Set assignments like a classroom learning platform</h2>
+                </div>
+                <span class="pill-badge" data-i18n="teacherBillingBadge">£2.99 per student monthly</span>
+              </div>
+
+              <div class="teacher-grid">
+                <form id="assignmentForm" class="teacher-form">
+                  <label>
+                    <span data-i18n="assignmentTitleLabel">Assignment title</span>
+                    <input id="assignmentTitleInput" type="text" placeholder="Latin verbs review" />
+                  </label>
+                  <label>
+                    <span data-i18n="assignmentDifficultyLabel">Difficulty</span>
+                    <select id="assignmentDifficultySelect">
+                      <option value="easy">Easy</option>
+                      <option value="medium">Medium</option>
+                      <option value="hard">Hard</option>
+                      <option value="expert">Expert</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span data-i18n="assignmentSeatsLabel">Student seats</span>
+                    <input id="assignmentSeatsInput" type="number" min="1" value="25" />
+                  </label>
+                  <button class="primary-button" type="submit" data-i18n="assignmentSubmitButton">
+                    Create teacher test
+                  </button>
+                </form>
+
+                <div>
+                  <h3 data-i18n="assignmentQueueTitle">Assignment queue</h3>
+                  <div id="assignmentList" class="stack-list"></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel content-view" data-view-panel="payments">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="paymentsEyebrow">Payments and subscriptions</p>
+                  <h2 data-i18n="paymentsTitle">Connect cards and recurring billing safely with Stripe</h2>
+                </div>
+              </div>
+
+              <div class="payment-grid">
+                <article class="pricing-card accent">
+                  <span class="tag" data-i18n="recommendedPlanTag">Recommended setup</span>
+                  <h3 data-i18n="pricingCardTitle">Use Stripe Checkout + Stripe Billing</h3>
+                  <p data-i18n="pricingCardCopy">
+                    This is the cleanest way to support Visa, Mastercard, American Express, subscriptions,
+                    and customer self-service from your app with one hosted Stripe flow.
+                  </p>
+                  <ul class="feature-list">
+                    <li data-i18n="paymentMethodCards">Visa, Mastercard, and Amex</li>
+                    <li data-i18n="paymentMethodStripe">Secure Stripe-hosted checkout</li>
+                    <li data-i18n="paymentMethodSubscriptions">Monthly recurring student and teacher plans</li>
+                    <li data-i18n="paymentMethodPortal">Customer portal for payment method changes</li>
+                  </ul>
+                </article>
+
+                <article class="pricing-card">
+                  <h3 data-i18n="currentPlanTitle">Current role plan</h3>
+                  <p id="currentPlanPrice">Student plan: £3.99 per month</p>
+                  <div class="payment-method-row">
+                    <span class="pay-chip">VISA</span>
+                    <span class="pay-chip">Mastercard</span>
+                    <span class="pay-chip">Amex</span>
+                    <span class="pay-chip">Stripe</span>
+                  </div>
+                  <div class="payment-controls">
+                    <label id="paymentSeatCountWrap" class="payment-seat-control hidden">
+                      <span data-i18n="paymentSeatCountLabel">Teacher seats for billing</span>
+                      <input id="paymentSeatCountInput" type="number" min="1" value="25" />
+                    </label>
+                    <div class="payment-actions">
+                      <button
+                        id="startCheckoutButton"
+                        class="primary-button"
+                        type="button"
+                        data-i18n="startCheckoutButton"
+                      >
+                        Start secure checkout
+                      </button>
+                      <button
+                        id="refreshSubscriptionButton"
+                        class="ghost-button"
+                        type="button"
+                        data-i18n="refreshSubscriptionButton"
+                      >
+                        Refresh billing status
+                      </button>
+                      <button
+                        id="openPortalButton"
+                        class="ghost-button"
+                        type="button"
+                        data-i18n="openPortalButton"
+                      >
+                        Manage billing
+                      </button>
+                    </div>
+                  </div>
+                  <p class="hint" data-i18n="checkoutHint">
+                    Stripe Checkout opens in your browser, and the app can recheck billing when you return.
+                  </p>
+                </article>
+              </div>
+
+              <div class="integration-grid">
+                <article class="integration-card">
+                  <h3 data-i18n="integrationStepsTitle">Live integration steps</h3>
+                  <ol class="number-list">
+                    <li data-i18n="stepOne">Create a Stripe account and two subscription products.</li>
+                    <li data-i18n="stepTwo">Build a tiny backend to create Checkout Sessions.</li>
+                    <li data-i18n="stepThree">Listen for Stripe webhooks to confirm payment status.</li>
+                    <li data-i18n="stepFour">Store the subscription against the user account in your database.</li>
+                    <li data-i18n="stepFive">Only unlock premium views after your backend confirms the subscription.</li>
+                  </ol>
+                </article>
+
+                <article class="integration-card warning-card">
+                  <h3 data-i18n="securityWarningTitle">Do not do this in the frontend</h3>
+                  <ul class="feature-list">
+                    <li data-i18n="warningOne">Do not place Stripe secret keys in `scripty.js`.</li>
+                    <li data-i18n="warningTwo">Do not trust local storage alone for paid access.</li>
+                    <li data-i18n="warningThree">Do not expose AI API keys directly in the Electron app.</li>
+                  </ul>
+                </article>
+              </div>
+
+              <div id="paymentStatus" class="status-box subtle" data-i18n="paymentStatusLocked">
+                Premium features stay locked until a confirmed subscription is active.
+              </div>
+            </section>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="assistant-dock">
+      <button class="assistant-trigger" type="button" data-assistant="faq">AI FAQ</button>
+      <button class="assistant-trigger" type="button" data-assistant="support">AI Support</button>
+    </div>
+
+    <div id="assistantPanel" class="assistant-panel hidden">
+      <div class="assistant-header">
+        <div>
+          <p id="assistantLabel" class="eyebrow">AI FAQ</p>
+          <h3 id="assistantTitle">Quick help</h3>
+        </div>
+        <button id="closeAssistantButton" class="ghost-button" type="button">Close</button>
+      </div>
+      <div id="assistantMessages" class="assistant-messages"></div>
+      <form id="assistantForm" class="assistant-form">
+        <input id="assistantInput" type="text" placeholder="Ask about login, payments, tests, or support" />
+        <button class="primary-button" type="submit">Send</button>
+      </form>
+    </div>
+
+    <script src="scripty.js"></script>
+  </body>
+</html>
