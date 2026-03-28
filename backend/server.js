@@ -12,12 +12,13 @@ const {
 
 const app = express();
 const port = Number(process.env.PORT || 4242);
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "";
-const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "";
+const stripeSecretKey = String(process.env.STRIPE_SECRET_KEY || "").trim();
+const stripeWebhookSecret = String(process.env.STRIPE_WEBHOOK_SECRET || "").trim();
 const jsonParser = express.json();
 const railwayPublicDomain = String(process.env.RAILWAY_PUBLIC_DOMAIN || "").trim();
+const configuredPublicServerUrl = String(process.env.PUBLIC_SERVER_URL || "").trim();
 const publicServerUrl =
-  process.env.PUBLIC_SERVER_URL ||
+  configuredPublicServerUrl ||
   (railwayPublicDomain ? `https://${railwayPublicDomain}` : "") ||
   `http://localhost:${port}`;
 
