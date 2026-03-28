@@ -12,20 +12,28 @@ const {
 
 const app = express();
 const port = Number(process.env.PORT || 4242);
-const publicServerUrl = process.env.PUBLIC_SERVER_URL || `http://localhost:${port}`;
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "";
 const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "";
 const jsonParser = express.json();
+const railwayPublicDomain = String(process.env.RAILWAY_PUBLIC_DOMAIN || "").trim();
+const publicServerUrl =
+  process.env.PUBLIC_SERVER_URL ||
+  (railwayPublicDomain ? `https://${railwayPublicDomain}` : "") ||
+  `http://localhost:${port}`;
 
 const stripe = stripeSecretKey ? new Stripe(stripeSecretKey) : null;
 
+function getMissingStripeConfig() {
+  return [
+    stripe ? null : "STRIPE_SECRET_KEY",
+    process.env.STRIPE_PERSONAL_PRICE_ID ? null : "STRIPE_PERSONAL_PRICE_ID",
+    process.env.STRIPE_STUDENT_PRICE_ID ? null : "STRIPE_STUDENT_PRICE_ID",
+    process.env.STRIPE_TEACHER_PRICE_ID ? null : "STRIPE_TEACHER_PRICE_ID",
+  ].filter(Boolean);
+}
+
 function hasStripeConfig() {
-  return Boolean(
-    stripe &&
-      process.env.STRIPE_PERSONAL_PRICE_ID &&
-      process.env.STRIPE_STUDENT_PRICE_ID &&
-      process.env.STRIPE_TEACHER_PRICE_ID
-  );
+  return getMissingStripeConfig().length === 0;
 }
 
 function getPriceIdForRole(role) {
@@ -105,6 +113,7 @@ app.get("/api/health", (_req, res) => {
   res.json({
     ok: true,
     stripeConfigured: hasStripeConfig(),
+    missingStripeConfig: getMissingStripeConfig(),
     publicServerUrl,
   });
 });
